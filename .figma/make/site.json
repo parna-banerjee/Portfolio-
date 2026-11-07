@@ -1,0 +1,10 @@
+{
+  "description": "Explore Parna Banerjee’s software engineering portfolio through interactive projects, skills, achievements, and contact links designed to help recruiters quickly assess her work.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

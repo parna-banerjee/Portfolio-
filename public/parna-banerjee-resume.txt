@@ -1,0 +1,34 @@
+PARNA BANERJEE
+Software Engineer — Backend / Full-Stack
+
+Email: parnabanerje22@gmail.com
+LinkedIn: linkedin.com/in/parna-banerjee-42820a302
+GitHub: github.com/parna-banerjee
+LeetCode: leetcode.com/u/parnabanerjee
+
+EDUCATION
+B.Tech in Computer Science
+Atria Institute of Technology, Bangalore
+2023–Present | CGPA: 8.8
+
+EXPERIENCE
+Infosys Springboard Virtual Internship — Backend
+July–September 2026
+Built an enterprise procurement system with Java, Spring Boot, JPA, Hibernate, MySQL, and React.
+Delivered three role-specific portals, 15+ REST APIs, automated approvals, email alerts, CSV reports, and five-stage order tracking.
+
+PROJECTS
+AutoPulse — Node.js, Express, React, PostgreSQL, Supabase, Gemini AI
+Family health records platform with role-based access and 10+ REST APIs. Gemini Vision OCR extracts prescription and lab-report fields to JSON at 95% field accuracy in under five seconds. Includes an SSE streaming assistant, time-boxed QR sharing, and health trends.
+
+Canteen Management System — Node.js, Express, React, MongoDB
+JWT-secured ordering platform with multiple vendors, 50+ menu items, slot booking, OTP pickup, and a vendor sales dashboard.
+
+SKILLS
+Java, C, JavaScript, Node.js, Express.js, React.js, Spring Boot, SQL, MongoDB, Redis, Git, GitHub, AWS S3, Vercel, Postman, DSA, OOP, Networks, OS, DBMS
+
+ACHIEVEMENTS
+250+ LeetCode problems
+Infosys certifications in Java, Full Stack React, and Agile
+IIT Bombay PHP & MySQL
+Anthropic Claude Code 101 and Claude Code in Action
