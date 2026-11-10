@@ -188,3 +188,64 @@ footer { min-height: 100px; max-width: 1200px; margin: auto; padding: 3rem 0 2re
 @media (prefers-reduced-motion: reduce) {
   html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}.walking-sprite{display:none}
 }
+
+/* ===== SKILL TREE (hub + class nodes + side card) ===== */
+.skill-console { --px: 4px; container-type: inline-size; position: relative; max-width: 1220px; margin: auto; display: flex; flex-direction: column; }
+.skill-stage { padding: 1.2rem 1.2rem 1.8rem; background: repeating-linear-gradient(0deg, transparent 0 4px, rgba(255,255,255,.025) 4px 5px), #130b29; }
+.skill-side { order: 2; }
+.skill-side-inner { padding: 1.2rem; }
+.skill-bar { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding-bottom: .9rem; border-bottom: 2px dashed var(--border); color: var(--lilac); font: 7px/1.5 var(--pixel); text-transform: uppercase; }
+.skill-bar span:last-child { color: var(--yellow); }
+.skill-bar .blink { animation: skill-blink 1s steps(2) infinite; }
+@keyframes skill-blink { 50% { opacity: .25; } }
+
+.skill-tree { position: relative; width: min(100%, 600px); aspect-ratio: 1.12; margin: 1rem auto 0; will-change: transform; transition: transform .35s steps(7); }
+.skill-tree::before { content: ''; position: absolute; left: 4%; top: 6%; width: 6px; height: 6px; background: var(--lilac); box-shadow: 120px 40px 0 var(--pink), 440px 20px 0 var(--teal), 280px 330px 0 var(--yellow), 40px 300px 0 var(--teal), 500px 260px 0 var(--lilac); opacity: .5; }
+.skill-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.skill-lines line { stroke: #54416d; stroke-width: 3; stroke-dasharray: 6 6; vector-effect: non-scaling-stroke; transition: stroke .2s; }
+.skill-lines line.on { stroke: var(--c); animation: skill-flow .6s steps(6) infinite; }
+@keyframes skill-flow { to { stroke-dashoffset: -12; } }
+
+.skill-hub { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 128px; display: grid; justify-items: center; gap: .6rem; padding: .9rem .6rem .75rem; background: #241443; color: inherit; border: 3px solid var(--ink); box-shadow: 6px 6px 0 #080515; cursor: default; transition: border-color .15s, transform .15s; }
+.skill-hub .parna-sprite { width: 52px; height: auto; image-rendering: pixelated; }
+.skill-hub > span:last-child { color: var(--yellow); font: 7px/1.4 var(--pixel); text-align: center; }
+.has-active .skill-hub { cursor: pointer; }
+.has-active .skill-hub:hover { border-color: var(--pink); transform: translate(-50%, calc(-50% - 3px)); }
+
+.glyph { width: calc(var(--w) * var(--px)); height: auto; fill: currentColor; }
+.skill-node { position: absolute; z-index: 2; transform: translate(-50%, -50%); width: 124px; min-height: 100px; display: grid; grid-template-rows: 44px auto; justify-items: center; align-items: center; gap: .55rem; padding: .7rem .5rem .65rem; background: #1b1036; color: var(--c); border: 3px solid #6a5292; box-shadow: 5px 5px 0 #080515; cursor: pointer; transition: border-color .15s, background .15s, color .15s, transform .15s; }
+.skill-node span { color: var(--ink); font: 7px/1.5 var(--pixel); text-align: center; text-transform: uppercase; }
+.skill-node:hover { border-color: var(--c); transform: translate(-50%, calc(-50% - 3px)); }
+.skill-node.on { background: var(--c); border-color: var(--ink); color: #160c2c; }
+.skill-node.on span { color: #160c2c; }
+
+.skill-detail { border: 3px solid var(--c); background: #170e2e; box-shadow: 6px 6px 0 #080515; padding: 1.2rem; animation: skill-in .35s steps(5) both; }
+@keyframes skill-in { from { opacity: 0; transform: translateX(-16px); } }
+.skill-detail header { display: grid; grid-template-columns: 56px 1fr auto; gap: .9rem; align-items: center; padding-bottom: 1rem; border-bottom: 2px dashed var(--border); }
+.skill-detail-glyph { width: 56px; height: 56px; display: grid; place-items: center; background: var(--c); color: #160c2c; box-shadow: 4px 4px 0 #080515; }
+.skill-detail-glyph .glyph { --px: 3px; }
+.skill-detail small { display: block; margin-bottom: .55rem; color: var(--muted); font: 6px/1.4 var(--pixel); }
+.skill-detail h3 { margin: 0; color: var(--ink); font: 11px/1.4 var(--pixel); text-transform: uppercase; }
+.skill-close { width: 30px; height: 30px; border: 2px solid var(--border); background: transparent; color: var(--muted); font: 8px var(--pixel); cursor: pointer; transition: border-color .15s, color .15s; }
+.skill-close:hover { border-color: var(--pink); color: var(--pink); }
+.skill-count { margin: 1rem 0 .3rem; color: var(--c); font: 7px var(--pixel); }
+.skill-detail ul { list-style: none; margin: 0; padding: 0; }
+.skill-detail li { padding: .8rem 0; border-bottom: 1px dashed #54416d; font-size: .95rem; font-weight: 700; animation: skill-in .3s steps(4) both; animation-delay: calc(var(--i) * 70ms); }
+.skill-detail li:last-child { border-bottom: 0; padding-bottom: .2rem; }
+.skill-detail li::before { content: ''; display: inline-block; width: 7px; height: 7px; margin-right: .7rem; background: var(--c); }
+
+/* wide console: card floats on the left, tree slides right (transform only = no layout cost) */
+@container (min-width: 1060px) {
+  .skill-side { position: absolute; z-index: 3; left: 0; top: 0; width: 392px; }
+  .skill-side-inner { padding: 1.5rem 0 0 1.5rem; }
+  .has-active .skill-tree { transform: translateX(200px); }
+}
+@media (max-width: 640px) {
+  .skill-console { --px: 3px; }
+  .skill-stage { padding: .8rem .8rem 1.4rem; }
+  .skill-tree { aspect-ratio: .95; }
+  .skill-node { width: 86px; min-height: 84px; grid-template-rows: 34px auto; padding: .5rem .3rem; }
+  .skill-node span { font-size: 6px; }
+  .skill-hub { width: 96px; }
+  .skill-hub .parna-sprite { width: 40px; }
+}

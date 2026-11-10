@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
-
+import SkillTree from "./SkillTree"
 type Project = {
   id: string
   title: string
@@ -102,6 +102,7 @@ const skills = [
       ["SQL", "Procurement"],
       ["MongoDB", "Canteen"],
       ["Redis", "API caching"],
+      ["PostgreSQL", "AutoPulse"],
     ],
   },
   {
@@ -293,9 +294,7 @@ function App() {
   const [soundOn, setSoundOn] = useState(false)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [filter, setFilter] = useState("All")
-  const [flippedSkills, setFlippedSkills] = useState<Record<string, boolean>>(
-    {},
-  )
+  
   const [formSent, setFormSent] = useState(false)
   const [banner, setBanner] = useState("")
   const [secret, setSecret] = useState(false)
@@ -731,44 +730,11 @@ function App() {
             title="SKILL TREE"
             note="Real tools, tied to real work. Tap a skill to inspect."
           />
-          <div className="skill-grid">
-            {skills.map((group, index) => (
-              <article
-                className="skill-card pixel-card reveal"
-                key={group.title}
-                style={{ "--delay": `${index * 80}ms` } as React.CSSProperties}
-              >
-                <header>
-                  <span>{group.icon}</span>
-                  <h3>{group.title}</h3>
-                  <small>{String(index + 1).padStart(2, "0")}</small>
-                </header>
-                <div className="skill-list">
-                  {group.items.map(([name, used]) => {
-                    const key = `${group.title}-${name}`
-                    return (
-                      <button
-                        type="button"
-                        key={name}
-                        className={flippedSkills[key] ? "flipped" : ""}
-                        onClick={() =>
-                          setFlippedSkills((s) => ({ ...s, [key]: !s[key] }))
-                        }
-                        aria-label={`${name}. ${
-                          flippedSkills[key]
-                            ? `Used in ${used}`
-                            : "Show where used"
-                        }`}
-                      >
-                        <span>{name}</span>
-                        <span>USED IN: {used}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </article>
-            ))}
-          </div>
+               <SkillTree
+       skills={skills}
+       hub={<ParnaSprite />}
+       
+     />
           <LevelTeaser href="#missions" text="MISSIONS" />
         </section>
 

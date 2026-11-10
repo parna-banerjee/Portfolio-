@@ -25,7 +25,7 @@ Canteen Management System — Node.js, Express, React, MongoDB
 JWT-secured ordering platform with multiple vendors, 50+ menu items, slot booking, OTP pickup, and a vendor sales dashboard.
 
 SKILLS
-Java, C, JavaScript, Node.js, Express.js, React.js, Spring Boot, SQL, MongoDB, Redis, Git, GitHub, AWS S3, Vercel, Postman, DSA, OOP, Networks, OS, DBMS
+Java, C, JavaScript, Node.js, Express.js, React.js, Spring Boot, SQL, MongoDB, PostgreSQL, Redis, Git, GitHub, AWS S3, Vercel, Postman, DSA, OOP, Networks, OS, DBMS
 
 ACHIEVEMENTS
 250+ LeetCode problems
