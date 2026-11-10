@@ -289,3 +289,7 @@ footer { min-height: 100px; max-width: 1200px; margin: auto; padding: 3rem 0 2re
   .mc-btn { width: 100%; height: 76px; }
   .mc-btn svg { width: 40px; }
 }
+
+/* ===== SUBMIT FORM ==== */
+.form-error { margin: 0; padding: .7rem .9rem; color: var(--pink); border: 2px solid var(--pink); background: #1c0f2e; font-size: .85rem; }
+.pixel-btn:disabled { opacity: .6; cursor: wait; }

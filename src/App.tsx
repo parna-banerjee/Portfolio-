@@ -22,7 +22,7 @@ type LevelTeaserProps = {
   href: string
   text: string
 }
-
+const WEB3FORMS_KEY = "78b71a45-8571-4873-9efd-58057cecfa69"
 const projects: Project[] = [
   {
     id: "01",
@@ -310,6 +310,8 @@ function App() {
   const [dir, setDir] = useState<"next" | "prev">("next")
   
   const [formSent, setFormSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState("")
   const [banner, setBanner] = useState("")
   const [secret, setSecret] = useState(false)
   const previousLevel = useRef(1)
@@ -450,10 +452,36 @@ function App() {
     blip()
   }
 
-  const submitForm = (e: FormEvent) => {
+   const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setFormSent(true)
-    blip()
+    const data = new FormData(e.currentTarget)
+    setSending(true)
+    setSendError("")
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: "New message from your portfolio",
+          from_name: "Portfolio contact form",
+          name: data.get("name"),
+          email: data.get("email"),
+          message: data.get("message"),
+        }),
+      })
+      const result = await res.json()
+      if (result.success) {
+        setFormSent(true)
+        blip()
+      } else {
+        setSendError(result.message || "Something went wrong. Please try again.")
+      }
+    } catch {
+      setSendError("Network error. Please try again or email me directly.")
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -1013,11 +1041,8 @@ function App() {
                   <span>✓</span>
                   <h3>QUEST ACCEPTED!</h3>
                   <p>
-                    I’ll reply soon. Your message is ready to send via email.
+                     Your message just landed in my inbox. I’ll reply soon.
                   </p>
-                  <a href="mailto:parnabanerje22@gmail.com?subject=Portfolio%20quest">
-                    OPEN EMAIL APP →
-                  </a>
                 </div>
               ) : (
                 <form onSubmit={submitForm}>
@@ -1031,7 +1056,7 @@ function App() {
                       name="email"
                       type="email"
                       required
-                      placeholder="you@company.com"
+                      placeholder="player@mail.com"
                     />
                   </label>
                   <label>
@@ -1040,11 +1065,21 @@ function App() {
                       name="message"
                       required
                       rows={5}
-                      placeholder="Tell me about the quest..."
+                      placeholder="Tell me about the quest."
                     />
                   </label>
-                  <button className="pixel-btn primary" type="submit">
-                    SEND QUEST <PixelIcon name="arrow" />
+                                    {sendError && (
+                    <p className="form-error" role="alert">
+                      {sendError}
+                    </p>
+                  )}
+                  <button
+                    className="pixel-btn primary"
+                    type="submit"
+                    disabled={sending}
+                  >
+                    {sending ? "SENDING..." : "SEND QUEST"}{" "}
+                    <PixelIcon name="arrow" />
                   </button>
                 </form>
               )}
