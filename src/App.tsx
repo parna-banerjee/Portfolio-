@@ -129,13 +129,7 @@ const skills = [
   },
 ]
 
-const achievements = [
-  ["WORK", "Infosys Springboard Virtual Internship", "Backend · Jul–Sep 2026"],
-  ["250+", "LeetCode Problems", "Consistency unlocked"],
-  ["CERT", "Infosys Certifications", "Java · Full Stack React · Agile"],
-  ["IITB", "IIT Bombay", "PHP & MySQL"],
-  ["AI", "Anthropic Claude Code", "101 · Code in Action"],
-]
+
 
 function PixelIcon({
   name,
@@ -267,6 +261,23 @@ function PixelButton({
   )
 }
 
+function PixelTriangle({ dir }: { dir: "next" | "prev" }) {
+  // 15 rows, widest row in the middle = a pointing triangle made of pixels
+  const rows = Array.from({ length: 15 }, (_, y) => 8 - Math.abs(7 - y))
+  const draw = () =>
+    rows.map((w, y) => (
+      <rect key={y} x={dir === "next" ? 0 : 8 - w} y={y} width={w} height="1" />
+    ))
+  return (
+    <svg viewBox="0 0 9 16" shapeRendering="crispEdges" aria-hidden="true">
+      <g fill="#3f3150" transform="translate(1 1)">
+        {draw()}
+      </g>
+      <g fill="#ffd84d">{draw()}</g>
+    </svg>
+  )
+}
+
 function SectionTitle({
   eyebrow,
   title,
@@ -294,6 +305,9 @@ function App() {
   const [soundOn, setSoundOn] = useState(false)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [filter, setFilter] = useState("All")
+
+  const [slide, setSlide] = useState(0)
+  const [dir, setDir] = useState<"next" | "prev">("next")
   
   const [formSent, setFormSent] = useState(false)
   const [banner, setBanner] = useState("")
@@ -304,6 +318,12 @@ function App() {
     () => projects.filter((p) => filter === "All" || p.tags.includes(filter)),
     [filter],
   )
+  const index = Math.min(slide, filteredProjects.length - 1)
+  const current = filteredProjects[index] ?? projects[0]
+  const go = (step: number) => {
+    setDir(step > 0 ? "next" : "prev")
+    setSlide((index + step + filteredProjects.length) % filteredProjects.length)
+  }
 
   useEffect(() => {
     const onScroll = () => {
@@ -472,7 +492,6 @@ function App() {
             "Experience",
             "Skills",
             "Missions",
-            "Achievements",
             "Contact",
           ].map((item) => (
             <a key={item} href={`#${item.toLowerCase()}`} onClick={navigate}>
@@ -750,17 +769,47 @@ function App() {
                 type="button"
                 aria-pressed={filter === item}
                 className={filter === item ? "active" : ""}
-                onClick={() => setFilter(item)}
+                onClick={() => {
+                setFilter(item)
+                setSlide(0)
+              }}
                 key={item}
               >
                 {item}
               </button>
             ))}
           </div>
-          <div className="project-stack">
-            {filteredProjects.map((project) => (
+                    <div className="reveal">
+            <div
+              className="mission-console"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight") go(1)
+                if (e.key === "ArrowLeft") go(-1)
+              }}
+            >
+              <div className="mc-top">
+                <span>MISSION SELECT</span>
+                <span aria-live="polite">
+                  {String(index + 1).padStart(2, "0")} /{" "}
+                  {String(filteredProjects.length).padStart(2, "0")}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                className="mc-btn prev"
+                onClick={() => go(-1)}
+                disabled={filteredProjects.length < 2}
+                aria-label="Previous mission"
+              >
+                <PixelTriangle dir="prev" />
+              </button>
+
+              <div className="mc-screen">
+                <div className={`mc-slide ${dir}`} key={current.id}>
+                  {[current].map((project) => (
               <article
-                className={`project-card pixel-card reveal ${project.accent}`}
+                className={`project-card pixel-card ${project.accent}`}
                 key={project.id}
               >
                 <div className="project-visual">
@@ -859,63 +908,36 @@ function App() {
                     ))}
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
-          <LevelTeaser href="#achievements" text="ACHIEVEMENTS" />
-        </section>
-
-        <section
-          id="achievements"
-          className="content-section achievements-section"
-        >
-          <SectionTitle
-            eyebrow="LEVEL 05 · PROGRESS"
-            title="TROPHY ROOM"
-            note="Proof of practice, learning, and consistency."
-          />
-          <div className="achievement-layout">
-            <div
-              className="trophy-case reveal"
-              aria-label="Pixel trophy illustration"
-            >
-              <div className="trophy-shine" />
-              <div className="trophy">
-                <i />
-                <b />
-                <span />
+                  </article>
+                  ))}
+                </div>
               </div>
-              <p>5 / 5 UNLOCKED</p>
-            </div>
-            <div className="achievement-list">
-              {achievements.map(([icon, title, description], index) => (
-                <article
-                  className="achievement pixel-card reveal"
-                  style={
-                    { "--delay": `${index * 90}ms` } as React.CSSProperties
-                  }
-                  key={title}
-                >
-                  <span>{icon}</span>
-                  <div>
-                    <small>ACHIEVEMENT UNLOCKED</small>
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                  </div>
-                  <b>✓</b>
-                </article>
-              ))}
-              {secret && (
-                <article className="achievement secret pixel-card">
-                  <span>???</span>
-                  <div>
-                    <small>SECRET ACHIEVEMENT</small>
-                    <h3>Code Breaker</h3>
-                    <p>You found the Konami code.</p>
-                  </div>
-                  <b>✓</b>
-                </article>
-              )}
+
+              <button
+                type="button"
+                className="mc-btn next"
+                onClick={() => go(1)}
+                disabled={filteredProjects.length < 2}
+                aria-label="Next mission"
+              >
+                <PixelTriangle dir="next" />
+              </button>
+
+              <div className="mc-dots">
+                {filteredProjects.map((p, i) => (
+                  <button
+                    type="button"
+                    key={p.id}
+                    className={i === index ? "on" : ""}
+                    aria-label={`Go to mission ${p.id}`}
+                    aria-current={i === index}
+                    onClick={() => {
+                      setDir(i > index ? "next" : "prev")
+                      setSlide(i)
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
           <LevelTeaser href="#contact" text="CONTACT" />

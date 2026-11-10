@@ -249,3 +249,43 @@ footer { min-height: 100px; max-width: 1200px; margin: auto; padding: 3rem 0 2re
   .skill-hub { width: 96px; }
   .skill-hub .parna-sprite { width: 40px; }
 }
+
+
+/* ===== MISSION CONSOLE (project carousel) ===== */
+.mission-console { max-width: 1220px; margin: auto; display: grid; grid-template-columns: 110px minmax(0, 1fr) 110px; grid-template-areas: "top top top" "prev screen next" "dots dots dots"; align-items: center; gap: 1rem 1.2rem; padding: 1.1rem 1.4rem 1.4rem; background: #b69cff; border: 5px solid #e1d7ff; border-radius: 18px 18px 46px 18px; box-shadow: 12px 12px 0 #080515, inset -7px -7px 0 #8365bd; }
+.mc-top { grid-area: top; display: flex; justify-content: space-between; align-items: center; margin: 0 .4rem; color: #33204a; font: 7px var(--pixel); }
+.mc-top span:last-child { display: flex; align-items: center; gap: .7rem; }
+.mc-top span:last-child::after { content: ''; width: 9px; height: 9px; background: var(--pink); border-radius: 50%; box-shadow: 0 0 0 2px #684c93; }
+.mc-screen { grid-area: screen; position: relative; min-height: 520px; overflow: hidden; border: 8px solid #352648; border-radius: 8px 8px 28px 8px; background: linear-gradient(#231641, #160d2e); }
+.mc-screen::after { content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none; background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.03) 4px); }
+.mc-slide { height: 100%; animation: mc-next .4s steps(6) both; }
+.mc-slide.prev { animation-name: mc-prev; }
+@keyframes mc-next { from { opacity: 0; transform: translateX(48px); } }
+@keyframes mc-prev { from { opacity: 0; transform: translateX(-48px); } }
+.mc-screen .project-card.pixel-card { height: 100%; min-height: 504px; border: 0; box-shadow: none; background: transparent; }
+.mc-screen .project-card:hover { transform: none; }
+
+.mc-btn { justify-self: center; display: grid; place-items: center; width: 84px; height: 110px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.mc-btn.prev { grid-area: prev; }
+.mc-btn.next { grid-area: next; }
+.mc-btn svg { width: 54px; height: auto; transition: transform .1s steps(2); }
+.mc-btn:hover:not(:disabled) svg { transform: scale(1.08); }
+.mc-btn:active:not(:disabled) svg { transform: translate(3px, 3px); }
+.mc-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+.mc-dots { grid-area: dots; display: flex; justify-content: center; gap: .7rem; }
+.mc-dots button { width: 14px; height: 14px; padding: 0; border: 2px solid #352648; background: #8365bd; cursor: pointer; }
+.mc-dots button.on { background: var(--yellow); }
+
+@media (max-width: 1050px) {
+  .mission-console { grid-template-columns: 80px minmax(0, 1fr) 80px; }
+  .mc-screen { min-height: 0; }
+  .mc-screen .project-card.pixel-card { min-height: 0; }
+  .mc-btn { width: 64px; }
+  .mc-btn svg { width: 42px; }
+}
+@media (max-width: 760px) {
+  .mission-console { grid-template-columns: 1fr 1fr; grid-template-areas: "top top" "screen screen" "prev next" "dots dots"; padding: .9rem .9rem 1.2rem; box-shadow: 8px 8px 0 #080515, inset -5px -5px 0 #8365bd; }
+  .mc-btn { width: 100%; height: 76px; }
+  .mc-btn svg { width: 40px; }
+}
