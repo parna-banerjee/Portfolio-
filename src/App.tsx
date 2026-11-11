@@ -10,6 +10,7 @@ type Project = {
   summary: string
   bullets: string[]
   built: string[]
+  image?: string
   links: ProjectLink[]
 }
 
@@ -27,6 +28,7 @@ const projects: Project[] = [
   {
     id: "01",
     title: "AutoPulse",
+    image: "/project/auto-pulse.png",
     kicker: "BOSS LEVEL",
     tags: ["Node.js", "React", "AI", "PostgreSQL", "Supabase"],
     accent: "pink",
@@ -53,6 +55,7 @@ const projects: Project[] = [
   {
     id: "02",
     title: "Canteen Management",
+    image: "/project/canteenpe.png",
     kicker: "SIDE QUEST",
     tags: ["Node.js", "React", "MongoDB", "Express"],
     accent: "yellow",
@@ -173,6 +176,77 @@ function PixelIcon({
   )
 }
 
+const SPRITE = [
+  "........DHHHHHHD........",
+  "......DHHhHHHHhHHD......",
+  ".....DHHhHHHHHHhHHD.....",
+  "....DHHHHhHHHHHHhHHD....",
+  "....DHHHHHHHHHhHHHHD....",
+  "....DHHHHHSSSSSSHHHD....",
+  "....DHHHHSSSSSSSSHHD....",
+  "....DHHSSSSSSSSSSHHD....",
+  "....DhHSSESSSSESSHHD....",
+  "....DhHSSESSSSESSHHD....",
+  "....DHHSBSSSSSSBSHhD....",
+  "....DHHSSSSMMSSSSHHD....",
+  "....DhHHSSSSSSSSHHHD....",
+  "....DHHHHHssssHHHHHD....",
+  "...DHHttTTSSSSTTtUHHD...",
+  "..DHHTTTTTTTTTTTTUUHHD..",
+  ".DHHHTTTTTTTTTTTTUUHD...",
+  ".DHHDSSTTtTTTTTTTVVDHD..",
+  ".DD..SSTTTTTTtTTTVV..DD.",
+  ".....SSTTTTTTTTTTVV.....",
+  ".....SSppppppppppVV.....",
+  "......PPPPPPPPPPPP......",
+  ".....PPPPPPPPPPPPPP.....",
+  "....PPPPPPPPPPPPPPPP....",
+  "....PPPPPPp..pPPPPPP....",
+  "....pqqqPPp..pPPqqqp....",
+  "....pqqqPPp..pPPqqqp....",
+  "....pppPPPp..pPPPppp....",
+  "...pPPPPPPp..pPPPPPPp...",
+  "...WWWWWWWW..WWWWWWWW...",
+  "...wwwwwwww..wwwwwwww...",
+]
+
+const SPRITE_COLORS: Record<string, string> = {
+  D: "#2b1410", // hair shadow
+  H: "#4a2519", // hair
+  h: "#6b3a27", // hair highlight
+  S: "#e8b08a", // skin
+  s: "#cf9270", // neck shadow
+  V: "#e8b08a", // skin (waving arm)
+  B: "#f08a8a", // blush
+  E: "#1a1033", // eyes
+  M: "#a0485a", // smile
+  T: "#1c1530", // tee
+  U: "#1c1530", // tee (waving sleeve)
+  t: "#3d3160", // tee highlight
+  P: "#d9c4a0", // cargo
+  p: "#b89e78", // cargo shadow
+  q: "#eadcc0", // cargo pocket
+  W: "#f4efff", // sneaker
+  w: "#c9bfe0", // sole
+}
+
+function spriteRects(keep: (c: string) => boolean) {
+  return SPRITE.flatMap((row, y) =>
+    [...row].map((c, x) =>
+      c !== "." && keep(c) ? (
+        <rect
+          key={`${x}-${y}`}
+          x={x}
+          y={y}
+          width="1"
+          height="1"
+          fill={SPRITE_COLORS[c]}
+        />
+      ) : null,
+    ),
+  )
+}
+
 function ParnaSprite({
   large = false,
   wave = false,
@@ -180,45 +254,19 @@ function ParnaSprite({
   large?: boolean
   wave?: boolean
 }) {
+  const isArm = (c: string) => c === "U" || c === "V"
+  const isHair = (c: string) => c === "D" || c === "H" || c === "h"
   return (
     <svg
       className={`parna-sprite ${large ? "large" : ""} ${wave ? "wave" : ""}`}
-      viewBox="0 0 80 96"
+      viewBox="0 0 24 31"
       role="img"
-      aria-label="Pixel art avatar of Parna with brown hair, headphones, and a pink handheld game console"
+      aria-label="Pixel art avatar of Parna with shoulder-length wavy brown hair, a black tee, beige cargo pants and white sneakers"
     >
       <g shapeRendering="crispEdges">
-        <path
-          fill="#2de2c6"
-          d="M8 8h16v4H8zM4 12h4v16H4zM8 28h12v4H8z"
-          opacity=".7"
-        />
-        <path
-          fill="#3a2057"
-          d="M24 12h32v4H24zM16 16h48v12H16zM12 28h56v28H12z"
-        />
-        <path
-          fill="#5e342a"
-          d="M24 16h32v4H24zM20 20h40v28H20zM16 28h8v24h-8zM56 28h8v24h-8z"
-        />
-        <path
-          fill="#b69cff"
-          d="M12 28h8v20h-8zM60 28h8v20h-8zM16 24h12v4H16zM52 24h12v4H52z"
-        />
-        <path fill="#f3b58f" d="M24 24h32v28H24z" />
-        <path fill="#5e342a" d="M24 24h8v8h-8zM32 20h24v8H32zM52 24h8v20h-8z" />
-        <path fill="#1a1033" d="M28 36h4v4h-4zM48 36h4v4h-4z" />
-        <path fill="#ff4fa3" d="M36 44h8v4h-8z" />
-        <path fill="#2a1744" d="M24 52h32v8H24zM20 60h40v24H20z" />
-        <path fill="#ff4fa3" d="M24 60h32v20H24z" />
-        <path fill="#ffd84d" d="M28 64h20v8H28z" />
-        <path fill="#1a1033" d="M28 72h8v4h-8zM48 68h4v4h-4zM44 72h4v4h-4z" />
-        <path
-          fill="#f3b58f"
-          d="M12 60h8v20h-8zM60 60h8v20h-8z"
-          className="sprite-arm"
-        />
-        <path fill="#2a1744" d="M24 84h12v8H20v-4h4zM44 84h12v4h4v4H44z" />
+        {spriteRects((c) => !isArm(c) && !isHair(c))}
+        <g className="sprite-arm">{spriteRects(isArm)}</g>
+        {spriteRects(isHair)}
       </g>
     </svg>
   )
@@ -850,7 +898,15 @@ function App() {
                         {project.title.toLowerCase().replace(" ", "-")}.app
                       </span>
                     </div>
-                    {project.id === "01" && (
+                                        {project.image && (
+                      <img
+                        className="project-shot"
+                        src={project.image}
+                        alt={`${project.title} screenshot`}
+                        loading="lazy"
+                      />
+                    )}
+                    {!project.image && project.id === "01" && (
                       <div className="health-ui">
                         <aside>
                           <b>AP</b>
@@ -873,7 +929,7 @@ function App() {
                         </main>
                       </div>
                     )}
-                    {project.id === "02" && (
+                    {!project.image && project.id === "02" && (
                       <div className="food-ui">
                         <aside>
                           <b>CANTEEN</b>
