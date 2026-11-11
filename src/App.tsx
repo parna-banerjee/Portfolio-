@@ -11,6 +11,7 @@ type Project = {
   bullets: string[]
   built: string[]
   image?: string
+  wip?: boolean
   links: ProjectLink[]
 }
 
@@ -76,6 +77,67 @@ const projects: Project[] = [
     ],
     links: [{ label: "GitHub", href: "https://github.com/parna-banerjee/CanteenPe_project" }],
   },
+
+  {
+    id: "03",
+    title: "Othello",
+    image: "/project/othello.png",
+    wip: true,
+    kicker: "IN PROGRESS",
+    tags: ["Java", "React", "Google OAuth", "OTP", "AI"],
+    accent: "teal",
+    metric: "NOW BUILDING",
+        summary:
+      "A multiplayer Othello game with Java and React. Sign in with Google, invite friends by OTP and get AI move help.",
+    bullets: [
+      "Java backend with full Othello rules",
+      "React board, lobby and friends list",
+      "Google login and OTP game invites",
+      "AI assistant for move suggestions",
+    ],
+    built: [
+      "Othello game logic in Java",
+      "React game board and interface",
+      "Google login",
+      "OTP-based game sharing",
+      "Friends and game invites",
+      "AI move assistant",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/parna-banerjee/othello" },
+    ],
+  },
+
+  {
+    id: "04",
+    title: "Email Scheduler",
+    image: "/project/email.png",
+    kicker: "BACKEND QUEST",
+    tags: ["Node.js", "Next.js", "BullMQ", "Redis", "PostgreSQL"],
+    accent: "pink",
+    metric: "NO CRON · RESTART-SAFE",
+        summary:
+      "Schedules emails to send at the exact time, survives restarts and enforces per-sender rate limits.",
+    bullets: [
+      "BullMQ delayed jobs, no cron",
+      "Duplicate-proof scheduling in Postgres",
+      "Hourly limits with overflow to next hour",
+      "Google login, Slack alerts, search",
+    ],
+    built: [
+      "Delayed-job scheduler that survives restarts",
+      "Retries with backoff and clear job states",
+      "Per-sender hourly caps and send throttling",
+      "Elasticsearch search and a live queue dashboard",
+      "Next.js dashboard with CSV recipient upload",
+      "Slack OAuth alerts when a limit is hit",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/parna-banerjee/email-scheduler" },
+      { label: "Live Demo", href: "https://email-service-frontend-alpha.vercel.app/" }
+    ],
+  },
+
 ]
 
 const skills = [
@@ -370,11 +432,19 @@ function App() {
   )
   const index = Math.min(slide, filteredProjects.length - 1)
   const current = filteredProjects[index] ?? projects[0]
-  const go = (step: number) => {
+    const go = (step: number) => {
+    if (soundOn) {
+      if (step > 0) {
+        tone(523, 0.06)
+        tone(784, 0.09, 0.06)
+      } else {
+        tone(784, 0.06)
+        tone(523, 0.09, 0.06)
+      }
+    }
     setDir(step > 0 ? "next" : "prev")
     setSlide((index + step + filteredProjects.length) % filteredProjects.length)
   }
-
   useEffect(() => {
     const onScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight
@@ -477,28 +547,33 @@ function App() {
     return () => window.removeEventListener("pointermove", move)
   }, [])
 
-  const blip = () => {
-    if (!soundOn) return
+   const audioRef = useRef<AudioContext | null>(null)
+
+  const tone = (freq: number, len = 0.08, delay = 0) => {
     const Ctx =
       window.AudioContext ||
       (window as unknown as { webkitAudioContext: typeof AudioContext })
         .webkitAudioContext
-    const ctx = new Ctx()
+    if (!Ctx) return
+    if (!audioRef.current) audioRef.current = new Ctx()
+    const ctx = audioRef.current
+    if (ctx.state === "suspended") void ctx.resume()
+    const t = ctx.currentTime + delay
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
     osc.type = "square"
-    osc.frequency.value = 440
-    gain.gain.setValueAtTime(0.035, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08)
+    osc.frequency.value = freq
+    gain.gain.setValueAtTime(0.04, t)
+    gain.gain.exponentialRampToValueAtTime(0.001, t + len)
     osc.connect(gain).connect(ctx.destination)
-    osc.start()
-    osc.stop(ctx.currentTime + 0.08)
+    osc.start(t)
+    osc.stop(t + len)
   }
 
   const navigate = () => {
     setMenuOpen(false)
-    blip()
   }
+  
 
    const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -520,8 +595,12 @@ function App() {
       })
       const result = await res.json()
       if (result.success) {
-        setFormSent(true)
-        blip()
+                setFormSent(true)
+        if (soundOn) {
+          tone(523, 0.08)
+          tone(659, 0.08, 0.09)
+          tone(784, 0.14, 0.18)
+        }
       } else {
         setSendError(result.message || "Something went wrong. Please try again.")
       }
@@ -535,8 +614,13 @@ function App() {
   return (
     <div
       className="app"
-      onClick={(e) => {
-        if ((e.target as HTMLElement).closest("button, a")) blip()
+            onClick={(e) => {
+        if (!soundOn) return
+        const clickable = (e.target as HTMLElement).closest(
+          "button, a, input, textarea",
+        )
+        if (clickable) tone(660, 0.08)
+        else tone(330, 0.05)
       }}
     >
       <a className="skip-link" href="#main">
@@ -579,7 +663,14 @@ function App() {
           <button
             className="sound-toggle"
             type="button"
-            onClick={() => setSoundOn(!soundOn)}
+                        onClick={() => {
+              const next = !soundOn
+              setSoundOn(next)
+              if (next) {
+                tone(523, 0.07)
+                tone(784, 0.1, 0.08)
+              }
+            }}
             aria-label={`${soundOn ? "Mute" : "Turn on"} interface sounds`}
           >
             SFX {soundOn ? "ON" : "OFF"}

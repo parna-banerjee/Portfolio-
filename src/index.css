@@ -318,3 +318,20 @@ footer { min-height: 100px; max-width: 1200px; margin: auto; padding: 3rem 0 2re
   .timeline { display: none; }
   .rail-dates { display: block; font: 8px var(--pixel); }
 }
+
+
+/* Othello project mock-up */
+.othello-ui { position: relative; box-sizing: border-box; height: calc(100% - 28px); display: grid; place-items: center; padding: 4%; background: #dff1ea; }
+.othello-board { height: 100%; aspect-ratio: 1; max-width: 100%; display: grid; grid-template-columns: repeat(8, 1fr); border: 3px solid #1d5b45; background: #2a8a64; box-shadow: 6px 6px 0 #1d5b45; }
+.othello-board i { position: relative; border: 1px solid #1d5b45; }
+.othello-board i.b::after, .othello-board i.w::after { content: ""; position: absolute; inset: 12%; clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.othello-board i.b::after { background: #1a1033; }
+.othello-board i.w::after { background: #f4efff; }
+.wip-ribbon { position: absolute; z-index: 2; top: 10px; right: 10px; padding: .45rem .6rem; color: var(--bg); background: var(--yellow); font: 6px var(--pixel); }
+
+
+/* keep every mission slide the same height */
+@media (min-width: 1051px) {
+  .mc-screen { height: 600px; min-height: 0; }
+  .mc-screen .project-card.pixel-card { min-height: 0; }
+}
