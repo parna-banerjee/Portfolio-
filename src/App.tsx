@@ -584,7 +584,7 @@ function App() {
           >
             SFX {soundOn ? "ON" : "OFF"}
           </button>
-          <a className="resume-mini" href="/parna-banerjee-resume.txt" download>
+          <a className="resume-mini" href="/parna-banerjee-resume.pdf" download>
             <PixelIcon name="download" /> RESUME
           </a>
           <button
@@ -736,15 +736,23 @@ function App() {
             title="EXPERIENCE"
           />
           <article className="experience-card pixel-card reveal">
-            <div className="experience-rail">
+                        <div className="experience-rail">
               <span className="company-mark">IS</span>
-              <div className="timeline-line">
-                <i />
-                <span>JUL</span>
-                <b />
-                <span>SEP</span>
-              </div>
-              <small>2026</small>
+              <ol className="timeline">
+                <li>
+                  <i />
+                  <b>JUL</b>
+                  <small>2026</small>
+                  <em>START</em>
+                </li>
+                <li>
+                  <i />
+                  <b>SEP</b>
+                  <small>2026</small>
+                  <em>COMPLETE</em>
+                </li>
+              </ol>
+              <small className="rail-dates">JUL – SEP 2026</small>
             </div>
             <div className="experience-main">
               <div className="experience-header">
@@ -757,27 +765,7 @@ function App() {
                 </div>
                 <span className="experience-status">QUEST COMPLETED</span>
               </div>
-              <div
-                className="experience-metrics"
-                aria-label="Internship impact"
-              >
-                <div>
-                  <strong>15+</strong>
-                  <span>REST APIs</span>
-                </div>
-                <div>
-                  <strong>3</strong>
-                  <span>ROLE PORTALS</span>
-                </div>
-                <div>
-                  <strong>7+</strong>
-                  <span>ENTITIES</span>
-                </div>
-                <div>
-                  <strong>5</strong>
-                  <span>ORDER STAGES</span>
-                </div>
-              </div>
+              
               <div className="experience-details">
                 <div>
                   <h4>MISSION</h4>
@@ -839,22 +827,7 @@ function App() {
             title="MISSIONS"
             note="Selected builds. Numbers first, implementation details included."
           />
-          <div className="filter-row reveal" aria-label="Filter projects">
-            {["All", "Node.js", "React", "AI"].map((item) => (
-              <button
-                type="button"
-                aria-pressed={filter === item}
-                className={filter === item ? "active" : ""}
-                onClick={() => {
-                setFilter(item)
-                setSlide(0)
-              }}
-                key={item}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+         
                     <div className="reveal">
             <div
               className="mission-console"
@@ -1079,7 +1052,7 @@ function App() {
                 </a>
               </div>
               <PixelButton
-                href="/parna-banerjee-resume.txt"
+                href="/parna-banerjee-resume.pdf"
                 download
                 variant="secondary"
                 icon={<PixelIcon name="download" />}

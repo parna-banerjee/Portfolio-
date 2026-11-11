@@ -301,3 +301,20 @@ footer { min-height: 100px; max-width: 1200px; margin: auto; padding: 3rem 0 2re
 @keyframes sprite-wave { from { transform: rotate(-135deg); } to { transform: rotate(-165deg); } }
 
 .project-shot { display: block; width: 100%; height: calc(100% - 28px); object-fit: cover; object-position: top; background: #eeeafb; }
+
+
+/* experience timeline (clearer) */
+.timeline { list-style: none; margin: 0; padding: 0; flex: 1; min-height: 240px; position: relative; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+.timeline::before { content: ""; position: absolute; top: 20px; bottom: 20px; left: 50%; width: 4px; margin-left: -2px; background: repeating-linear-gradient(#103a3c 0 8px, transparent 8px 14px); }
+.timeline li { position: relative; z-index: 1; display: grid; justify-items: center; gap: .5rem; padding: .8rem .6rem; text-align: center; color: #103a3c; background: var(--teal); }
+.timeline li i { width: 16px; height: 16px; margin-bottom: .4rem; border: 3px solid var(--bg); background: var(--pink); transform: rotate(45deg); }
+.timeline li:last-child i { background: var(--yellow); }
+.timeline b { font: 12px var(--pixel); }
+.timeline small { font: 8px var(--pixel); }
+.timeline em { font: normal 6px var(--pixel); opacity: .75; }
+.rail-dates { display: none; }
+.experience-details { margin-top: 1.7rem; }
+@media (max-width: 760px) {
+  .timeline { display: none; }
+  .rail-dates { display: block; font: 8px var(--pixel); }
+}
