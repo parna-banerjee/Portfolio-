@@ -48,8 +48,8 @@ const projects: Project[] = [
       "Multi-profile family records",
     ],
     links: [
-      { label: "GitHub", href: "https://github.com/parna-banerjee" },
-      { label: "Live Demo", href: "https://vercel.com" },
+      { label: "GitHub", href: "https://github.com/parna-banerjee/AutoPulse" },
+      { label: "Live Demo", href: "https://auto-pulse-flax.vercel.app/" },
     ],
   },
   {
@@ -74,7 +74,7 @@ const projects: Project[] = [
       "Menu and availability controls",
       "Vendor performance view",
     ],
-    links: [{ label: "GitHub", href: "https://github.com/parna-banerjee" }],
+    links: [{ label: "GitHub", href: "https://github.com/parna-banerjee/CanteenPe_project" }],
   },
 ]
 
